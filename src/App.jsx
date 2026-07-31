@@ -12,7 +12,7 @@ function App() {
       <div className="page-shell">
         <Header titulo='TaskFlow' subtitulo='Gerencie suas tarefas com mais organização.'></Header>
         <main id="app">
-          <PainelTarefas></PainelTarefas>
+          <PainelTarefas sectionHeader='Minhas tarefas' ></PainelTarefas>
 
             <Sobre></Sobre>
 

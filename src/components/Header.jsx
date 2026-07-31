@@ -1,9 +1,9 @@
-export default function Header(props){
+export default function Header({titulo, subtitulo}){
     return(
         <header className="site-header">
             <div className="brand">
-                <h1>{props.titulo}</h1>
-                <p>{props.subtitulo}</p>
+                <h1>{titulo}</h1>
+                <p>{subtitulo}</p>
             </div>
             <nav className="site-nav" aria-label="Navegação principal">
                 <a href="#tarefas">Tarefas</a>
