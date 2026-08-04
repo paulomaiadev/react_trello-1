@@ -20,6 +20,7 @@ function App() {
       texto: textoTarefa,
       prioridade: prioridadeTarefa,
       concluida: false,
+      coluna: 'A FAZER',
     }
 
     setTarefas((prev) => [...prev, novo])
