@@ -27,6 +27,12 @@ export default function ItemTarefa({ tarefas = [], onConcluir, onExcluir, onAtua
                     <li key={tarefa.id} className={itemClassName}>
                         <div className={styles.content}>
                             <span className={textClassName}>{tarefa.texto}</span>
+                            {tarefa.cidade || tarefa.cep ? (
+                                <div className={styles.meta}>
+                                    {tarefa.cep ? <small>CEP: {tarefa.cep}</small> : null}
+                                    {tarefa.cidade ? <small> — Cidade: {tarefa.cidade}</small> : null}
+                                </div>
+                            ) : null}
                         </div>
                         <div className={styles.actions}>
                             <label className="prioridade-label">

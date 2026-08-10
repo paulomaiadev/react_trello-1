@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import styles from './AdicionarTarefa.module.css'
 import PrioridadeTarefa from './PrioridadeTarefa'
 
@@ -7,11 +8,10 @@ export default function AdicionarTarefa({
     setTexto,
     prioridade,
     setPrioridade,
-    cep,
-    setCep,
-    cidade,
     onAdicionar,
 }) {
+    const [cep, setCep] = useState('')
+
     async function handleSubmit(event) {
         event.preventDefault()
 
@@ -19,6 +19,7 @@ export default function AdicionarTarefa({
         if (!tarefa) return
 
         await onAdicionar({ texto: tarefa, prioridade, cep })
+        setCep('')
     }
 
     return (
@@ -34,16 +35,18 @@ export default function AdicionarTarefa({
                     value={texto}
                     onChange={(event) => setTexto(event.target.value)}
                 />
-                <label className="sr-only" htmlFor="input-cep">CEP</label>
+
+                <label className="sr-only" htmlFor="input-cep">CEP (opcional)</label>
                 <input
                     className={styles.input}
                     type="text"
                     id="input-cep"
-                    placeholder="CEP (somente números)"
+                    placeholder="CEP (opcional)"
                     value={cep}
                     onChange={(event) => setCep(event.target.value)}
+                    maxLength={9}
                 />
-                {cidade ? <p className={styles.city}>Cidade: {cidade}</p> : null}
+
                 <PrioridadeTarefa prioridade={prioridade} setPrioridade={setPrioridade} label="Prioridade" />
                 <button className={styles.button} type="submit">{button}</button>
             </form>

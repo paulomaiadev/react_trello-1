@@ -1,12 +1,12 @@
 import './App.css'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
 import Header from './components/Header'
 import PainelTarefas from './components/PainelTarefas'
 import Sobre from './components/Sobre'
 import Footer from './components/Footer'
 import useLocalStorage from './hooks/useLocalStorage'
-import BuscaCep from './components/BuscaCep'
+
 
 const STORAGE_KEY = 'tarefas'
 
@@ -15,33 +15,20 @@ function App() {
   const [filtro, setFiltro] = useState('all')
   const [texto, setTexto] = useState('')
   const [prioridade, setPrioridade] = useState('media')
-  const [cep, setCep] = useState('')
-  const [cidade, setCidade] = useState('')
 
   async function consultarCidade(cepParam) {
-    const cleaned = (cepParam || '').replace(/\D/g, '')
+    const cleaned = (cepParam || '').toString().replace(/\D/g, '')
     if (!cleaned || cleaned.length < 8) return ''
 
     try {
       const url = `https://viacep.com.br/ws/${cleaned}/json/`
       const { data } = await axios.get(url)
       if (data && data.erro) return ''
-      const cidadeLocal = data.localidade || ''
-      setCidade(cidadeLocal)
-      return cidadeLocal
+      return data.localidade || ''
     } catch (err) {
-      setCidade('')
       return ''
     }
   }
-
-  useEffect(() => {
-    if (cep && cep.replace(/\D/g, '').length === 8) {
-      consultarCidade(cep)
-    } else {
-      setCidade('')
-    }
-  }, [cep])
 
   async function adicionarTarefa({ texto: textoTarefa, prioridade: prioridadeTarefa, cep: cepTarefa }) {
     const cidadeTarefa = await consultarCidade(cepTarefa)
@@ -59,8 +46,6 @@ function App() {
     setTarefas((prev) => [...prev, novo])
     setTexto('')
     setPrioridade('media')
-    setCep('')
-    setCidade('')
   }
 
   function atualizarColunaTarefa(id, novaColuna) {
@@ -118,16 +103,12 @@ function App() {
           prioridade={prioridade}
           setPrioridade={setPrioridade}
           onAdicionar={adicionarTarefa}
-          cep={cep}
-          setCep={setCep}
-          cidade={cidade}
           onConcluir={concluirTarefa}
           onExcluir={excluirTarefa}
           onAtualizarPrioridade={atualizarPrioridade}
           onAtualizarColuna={atualizarColunaTarefa}
         />
 
-        <BuscaCep />
 
         <Sobre />
       </main>
