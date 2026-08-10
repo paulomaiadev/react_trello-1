@@ -18,24 +18,23 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
-}
-
-.itemCompleted {
-  border-left-color: #3ddc97;
-  background: rgba(61, 220, 151, 0.08);
+  flex-wrap: wrap;
 }
 
 .content {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex: 1;
+  flex: 1 1 280px;
+  min-width: 0;
 }
 
 .text {
   color: var(--text);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .completedText {
@@ -46,6 +45,9 @@
 .actions {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .button {
@@ -70,4 +72,38 @@
 .danger {
   background: rgba(255, 92, 116, 0.16);
   color: #ff8fa3;
+}
+
+.prioridadeAlta {
+  border-left-color: #ff5c74;
+  background: rgba(255, 92, 116, 0.14);
+}
+
+.prioridadeMedia {
+  border-left-color: #f7c948;
+  background: rgba(247, 201, 72, 0.14);
+}
+
+.prioridadeBaixa {
+  border-left-color: #3ddc97;
+  background: rgba(61, 220, 151, 0.14);
+}
+
+.itemCompleted {
+  opacity: 0.85;
+}
+
+@media (max-width: 640px) {
+  .item {
+    padding: 16px;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .button {
+    flex: 1 1 calc(50% - 5px);
+  }
 }

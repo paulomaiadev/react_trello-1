@@ -1,4 +1,10 @@
-import ListaTarefas from './ListaTarefas'
+import Coluna from './Coluna'
+
+const COLUNAS = [
+    { key: 'A FAZER', title: 'A fazer' },
+    { key: 'EM ANDAMENTO', title: 'Em andamento' },
+    { key: 'CONCLUÍDA', title: 'Concluída' },
+]
 
 export default function TarefasCadastradas({
     tarefas = [],
@@ -7,11 +13,13 @@ export default function TarefasCadastradas({
     onConcluir,
     onExcluir,
     onAtualizarPrioridade,
+    onAtualizarColuna,
 }) {
     const listaFiltrada = tarefas.filter((tarefa) => {
+        const coluna = tarefa.coluna || (tarefa.concluida ? 'CONCLUÍDA' : 'A FAZER')
         if (filtro === 'all') return true
-        if (filtro === 'pendentes') return !tarefa.concluida
-        return tarefa.concluida
+        if (filtro === 'pendentes') return coluna !== 'CONCLUÍDA'
+        return coluna === 'CONCLUÍDA'
     })
 
     return (
@@ -24,12 +32,29 @@ export default function TarefasCadastradas({
                     <button type="button" data-filter="concluidas" className={filtro === 'concluidas' ? 'filtro ativo' : 'filtro'} onClick={() => onFiltroChange('concluidas')}>Concluídas</button>
                 </div>
             </div>
-            <ListaTarefas
-                tarefas={listaFiltrada}
-                onConcluir={onConcluir}
-                onExcluir={onExcluir}
-                onAtualizarPrioridade={onAtualizarPrioridade}
-            />
+
+            <div className="board">
+                {COLUNAS.map((coluna) => {
+                    const tarefasDaColuna = listaFiltrada.filter((tarefa) => {
+                        const colunaTarefa = tarefa.coluna || (tarefa.concluida ? 'CONCLUÍDA' : 'A FAZER')
+                        return colunaTarefa === coluna.key
+                    })
+
+                    return (
+                        <Coluna
+                            key={coluna.key}
+                            title={coluna.title}
+                            className="coluna"
+                            coluna={coluna.key}
+                            tarefas={tarefasDaColuna}
+                            onConcluir={onConcluir}
+                            onExcluir={onExcluir}
+                            onAtualizarPrioridade={onAtualizarPrioridade}
+                            onAtualizarColuna={onAtualizarColuna}
+                        />
+                    )
+                })}
+            </div>
         </section>
     )
 }

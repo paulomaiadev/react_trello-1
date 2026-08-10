@@ -28,9 +28,29 @@ function App() {
     setPrioridade('media')
   }
 
+  function atualizarColunaTarefa(id, novaColuna) {
+    setTarefas((prev) =>
+      prev.map((tarefa) =>
+        tarefa.id === id
+          ? { ...tarefa, coluna: novaColuna, concluida: novaColuna === 'CONCLUÍDA' }
+          : tarefa,
+      ),
+    )
+  }
+
   function concluirTarefa(id) {
     setTarefas((prev) =>
-      prev.map((tarefa) => (tarefa.id === id ? { ...tarefa, concluida: !tarefa.concluida } : tarefa)),
+      prev.map((tarefa) => {
+        if (tarefa.id !== id) return tarefa
+
+        const estaConcluida = tarefa.coluna === 'CONCLUÍDA' || tarefa.concluida
+
+        return {
+          ...tarefa,
+          coluna: estaConcluida ? 'A FAZER' : 'CONCLUÍDA',
+          concluida: !estaConcluida,
+        }
+      }),
     )
   }
 
@@ -44,13 +64,18 @@ function App() {
     )
   }
 
+  const tarefasExibidas = tarefas.map((tarefa) => ({
+    ...tarefa,
+    coluna: tarefa.coluna || (tarefa.concluida ? 'CONCLUÍDA' : 'A FAZER'),
+  }))
+
   return (
     <div className="page-shell">
       <Header titulo="TaskFlow" subtitulo="Gerencie suas tarefas com mais organização." />
       <main id="app">
         <PainelTarefas
           sectionHeader="Minhas tarefas"
-          tarefas={tarefas}
+          tarefas={tarefasExibidas}
           filtro={filtro}
           onFiltroChange={setFiltro}
           texto={texto}
@@ -61,6 +86,7 @@ function App() {
           onConcluir={concluirTarefa}
           onExcluir={excluirTarefa}
           onAtualizarPrioridade={atualizarPrioridade}
+          onAtualizarColuna={atualizarColunaTarefa}
         />
 
         <Sobre />

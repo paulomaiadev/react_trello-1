@@ -14,6 +14,7 @@ export default function PainelTarefas({
     onConcluir,
     onExcluir,
     onAtualizarPrioridade,
+    onAtualizarColuna,
 }) {
     return (
         <section className="painel-tarefas" aria-labelledby="tarefas-title" id="tarefas">
@@ -37,6 +38,7 @@ export default function PainelTarefas({
                 onConcluir={onConcluir}
                 onExcluir={onExcluir}
                 onAtualizarPrioridade={onAtualizarPrioridade}
+                onAtualizarColuna={onAtualizarColuna}
             />
         </section>
     )
