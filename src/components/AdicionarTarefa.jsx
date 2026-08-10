@@ -7,15 +7,18 @@ export default function AdicionarTarefa({
     setTexto,
     prioridade,
     setPrioridade,
+    cep,
+    setCep,
+    cidade,
     onAdicionar,
 }) {
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault()
 
         const tarefa = texto.trim()
         if (!tarefa) return
 
-        onAdicionar({ texto: tarefa, prioridade })
+        await onAdicionar({ texto: tarefa, prioridade, cep })
     }
 
     return (
@@ -31,6 +34,16 @@ export default function AdicionarTarefa({
                     value={texto}
                     onChange={(event) => setTexto(event.target.value)}
                 />
+                <label className="sr-only" htmlFor="input-cep">CEP</label>
+                <input
+                    className={styles.input}
+                    type="text"
+                    id="input-cep"
+                    placeholder="CEP (somente números)"
+                    value={cep}
+                    onChange={(event) => setCep(event.target.value)}
+                />
+                {cidade ? <p className={styles.city}>Cidade: {cidade}</p> : null}
                 <PrioridadeTarefa prioridade={prioridade} setPrioridade={setPrioridade} label="Prioridade" />
                 <button className={styles.button} type="submit">{button}</button>
             </form>

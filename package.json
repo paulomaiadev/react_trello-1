@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "axios": "^1.19.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.7",
+    "router": "^2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",

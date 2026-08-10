@@ -15,6 +15,9 @@ export default function PainelTarefas({
     onExcluir,
     onAtualizarPrioridade,
     onAtualizarColuna,
+    cep,
+    setCep,
+    cidade,
 }) {
     return (
         <section className="painel-tarefas" aria-labelledby="tarefas-title" id="tarefas">
@@ -29,6 +32,9 @@ export default function PainelTarefas({
                 prioridade={prioridade}
                 setPrioridade={setPrioridade}
                 onAdicionar={onAdicionar}
+                cep={cep}
+                setCep={setCep}
+                cidade={cidade}
             />
 
             <TarefasCadastradas
