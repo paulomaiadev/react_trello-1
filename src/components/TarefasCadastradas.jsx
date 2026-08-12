@@ -15,6 +15,11 @@ export default function TarefasCadastradas({
     onAtualizarPrioridade,
     onAtualizarColuna,
 }) {
+
+    const total = tarefas.length
+    const pendentes = tarefas.filter((tarefa) => !(tarefa.concluida || tarefa.coluna === 'CONCLUÍDA')).length
+    const concluidas = total - pendentes
+    
     const listaFiltrada = tarefas.filter((tarefa) => {
         const coluna = tarefa.coluna || (tarefa.concluida ? 'CONCLUÍDA' : 'A FAZER')
         if (filtro === 'all') return true
@@ -22,14 +27,16 @@ export default function TarefasCadastradas({
         return coluna === 'CONCLUÍDA'
     })
 
+    
+
     return (
         <section id="lista-tarefas-section" aria-labelledby="lista-titulo">
             <div className="section-header filtros-container">
                 <h3 id="lista-titulo">Tarefas cadastradas</h3>
-                <div id="filtros-tarefas" className="filtros" role="group" aria-label="Filtros de tarefas">
-                    <button type="button" data-filter="all" className={filtro === 'all' ? 'filtro ativo' : 'filtro'} onClick={() => onFiltroChange('all')}>Todas</button>
-                    <button type="button" data-filter="pendentes" className={filtro === 'pendentes' ? 'filtro ativo' : 'filtro'} onClick={() => onFiltroChange('pendentes')}>Pendentes</button>
-                    <button type="button" data-filter="concluidas" className={filtro === 'concluidas' ? 'filtro ativo' : 'filtro'} onClick={() => onFiltroChange('concluidas')}>Concluídas</button>
+                <div className="contadores" aria-live="polite">
+                    <span id="contador-total">Total: {total}</span>
+                    <span id="contador-pendentes">Pendentes: {pendentes}</span>
+                    <span id="contador-concluidas">Concluídas: {concluidas}</span>
                 </div>
             </div>
 
