@@ -9,6 +9,7 @@ export default function Coluna({
     onExcluir,
     onAtualizarPrioridade,
     onAtualizarColuna,
+    onEditar,
 }) {
     return (
         <section className={className}>
@@ -20,6 +21,7 @@ export default function Coluna({
                 onExcluir={onExcluir}
                 onAtualizarPrioridade={onAtualizarPrioridade}
                 onAtualizarColuna={onAtualizarColuna}
+                onEditar={onEditar}
             />
         </section>
     )

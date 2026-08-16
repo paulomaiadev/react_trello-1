@@ -2,14 +2,30 @@ import { useState } from 'react'
 import axios from 'axios'
 import useLocalStorage from '../hooks/useLocalStorage'
 import PainelTarefas from '../components/PainelTarefas'
+import ModalTarefa from '../components/ModalTarefa'
 
 const STORAGE_KEY = 'tarefas'
 
 export default function Dashboard() {
     const [tarefas, setTarefas] = useLocalStorage(STORAGE_KEY, [])
     const [filtro, setFiltro] = useState('all')
-    const [texto, setTexto] = useState('')
-    const [prioridade, setPrioridade] = useState('media')
+    const [filtroPrioridade, setFiltroPrioridade] = useState('todas')
+    const [modalAberto, setModalAberto] = useState(false)
+    const [tarefaEditando, setTarefaEditando] = useState(null)
+    const [colunaAtiva, setColunaAtiva] = useState('A FAZER')
+
+    // ✅ ABRE MODAL PARA CRIAR NOVA TAREFA
+    function abrirModalCriar() {
+        setTarefaEditando(null)  // null = modo criação
+        setColunaAtiva('A FAZER')
+        setModalAberto(true)
+    }
+
+    // ✅ ABRE MODAL PARA EDITAR TAREFA EXISTENTE
+    function abrirModalEditar(tarefa) {
+        setTarefaEditando(tarefa)  // Preenche com dados existentes
+        setModalAberto(true)
+    }
 
     async function consultarCidade(cepParam) {
         const cleaned = (cepParam || '').toString().replace(/\D/g, '')
@@ -41,8 +57,6 @@ export default function Dashboard() {
         }
 
         setTarefas((prev) => [...prev, novo])
-        setTexto('')
-        setPrioridade('media')
     }
 
     function atualizarColunaTarefa(id, novaColuna) {
@@ -72,7 +86,12 @@ export default function Dashboard() {
     }
 
     function excluirTarefa(id) {
-        setTarefas((prev) => prev.filter((tarefa) => tarefa.id !== id))
+        
+
+        const confirmado = window.confirm('Tem certeza que deseja excluir esta tarefa?')
+        if (confirmado){
+            setTarefas((prev) => prev.filter((tarefa) => tarefa.id !== id))
+        };
     }
 
     function atualizarPrioridade(id, novaPrioridade) {
@@ -85,22 +104,56 @@ export default function Dashboard() {
         ...tarefa,
         coluna: tarefa.coluna || (tarefa.concluida ? 'CONCLUÍDA' : 'A FAZER'),
     }))
+
+    function handleSalvarTarefa(dadosTarefa) {
+        if (dadosTarefa.id) {
+            // Editar
+            setTarefas((prev) =>
+                prev.map((tarefa) =>
+                    tarefa.id === dadosTarefa.id
+                        ? { ...tarefa, ...dadosTarefa }
+                        : tarefa
+                )
+            )
+        } else {
+            // Criar
+            adicionarTarefa(dadosTarefa)
+        }
+        setModalAberto(false)
+        setTarefaEditando(null)
+        setColunaAtiva(null)
+    }
+
     return(
-        <PainelTarefas
-                    sectionHeader="Minhas tarefas"
-                    tarefas={tarefasExibidas}
-                    filtro={filtro}
-                    onFiltroChange={setFiltro}
-                    texto={texto}
-                    setTexto={setTexto}
-                    prioridade={prioridade}
-                    setPrioridade={setPrioridade}
-                    onAdicionar={adicionarTarefa}
-                    onConcluir={concluirTarefa}
-                    onExcluir={excluirTarefa}
-                    onAtualizarPrioridade={atualizarPrioridade}
-                    onAtualizarColuna={atualizarColunaTarefa}
-        />
+        <>
+            <PainelTarefas
+                sectionHeader="Minhas tarefas"
+                tarefas={tarefasExibidas}
+                filtro={filtro}
+                onFiltroChange={setFiltro}
+                filtroPrioridade={filtroPrioridade}
+                onFiltroPrioridadeChange={setFiltroPrioridade}
+                onAdicionar={abrirModalCriar}
+                onEditar={abrirModalEditar}
+                onConcluir={concluirTarefa}
+                onExcluir={excluirTarefa}
+                onAtualizarPrioridade={atualizarPrioridade}
+                onAtualizarColuna={atualizarColunaTarefa}
+            />
+            {modalAberto && (
+                <ModalTarefa
+                    aberto={modalAberto}
+                    onFechar={() => {
+                        setModalAberto(false)
+                        setTarefaEditando(null)
+                        setColunaAtiva(null)
+                    }}
+                    onSalvar={handleSalvarTarefa}
+                    tarefa={tarefaEditando}
+                    coluna={colunaAtiva}
+                />
+            )}
+        </>
     )
 }
         

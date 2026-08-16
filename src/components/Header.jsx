@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 import styles from './Header.module.css'
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/useAuthHook'
 
 export default function Header({ titulo, subtitulo }) {
-    const { logado, logout } = useAuth();
+    const { logado } = useAuth()
+    
     return (
         <header className={styles.siteHeader}>
             <div className={styles.brand}>
@@ -16,9 +17,8 @@ export default function Header({ titulo, subtitulo }) {
                 {logado ? ( 
                     <Link to="/logout" className={styles.link}>Logout</Link>
                 ): (
-                <Link to="/login" className={styles.link}>Login</Link>
+                    <Link to="/login" className={styles.link}>Login</Link>
                 )}
-                
             </nav>
         </header>
     )
