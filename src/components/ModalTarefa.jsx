@@ -58,21 +58,13 @@ function ModalTarefa({ aberto, onFechar, onSalvar, tarefa=null, coluna='A FAZER'
 
         }
 
-        // Registra o listener no documento
-
         document.addEventListener('keydown', handleEsc);
-
-        // CLEANUP: remove o listener quando o modal fechar
-
-        // Sem isso: o listener acumula a cada abertura do modal
-
-        // e onFechar seria chamado múltiplas vezes
 
         return () => {
 
             document.removeEventListener('keydown', handleEsc)
         };
-    });
+    }, [aberto, onFechar]);
 
 
     async function consultarCidade(cepDigitado) {

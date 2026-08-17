@@ -24,7 +24,7 @@ export default function ItemTarefa({ tarefas = [], onConcluir, onExcluir, onAtua
                 const textClassName = `${styles.text} ${tarefa.concluida || tarefa.coluna === 'CONCLUÍDA' ? styles.completedText : ''}`
 
                 return (
-                    <li key={tarefa.id} className={itemClassName}>
+                    <li key={tarefa.id} className={itemClassName} onDoubleClick={() => onEditar?.(tarefa)}>
                         <div className={styles.content}>
                             <span className={textClassName}>{tarefa.texto}</span>
                             {tarefa.cidade || tarefa.cep ? (

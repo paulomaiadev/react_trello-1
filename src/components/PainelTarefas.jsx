@@ -21,7 +21,7 @@ export default function PainelTarefas({
             </header>
 
             <AdicionarTarefa
-                onAdicionar={onAdicionar}
+                onAdicionar={() => onAdicionar?.('A FAZER')}
             />
 
             <TarefasCadastradas
@@ -34,6 +34,7 @@ export default function PainelTarefas({
                 onExcluir={onExcluir}
                 onAtualizarPrioridade={onAtualizarPrioridade}
                 onAtualizarColuna={onAtualizarColuna}
+                onAdicionar={onAdicionar}
             />
         </section>
     )

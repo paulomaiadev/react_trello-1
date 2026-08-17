@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -16,9 +16,15 @@ export default function Login() {
 
     const [shake, setShake] = useState(false);
 
-    const { login } = useAuth();
+    const { login, logado } = useAuth();
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (logado) {
+            navigate('/dashboard', { replace: true })
+        }
+    }, [logado, navigate])
 
     function handleLogin() {
 

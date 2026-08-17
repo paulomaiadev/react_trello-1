@@ -17,6 +17,7 @@ export default function TarefasCadastradas({
     onAtualizarPrioridade,
     onAtualizarColuna,
     onEditar,
+    onAdicionar,
 }) {
 
     const total = tarefas.length
@@ -90,6 +91,7 @@ export default function TarefasCadastradas({
                             onAtualizarPrioridade={onAtualizarPrioridade}
                             onAtualizarColuna={onAtualizarColuna}
                             onEditar={onEditar}
+                            onAdicionar={onAdicionar}
                         />
                     )
                 })}

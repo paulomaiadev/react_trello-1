@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import useLocalStorage from '../hooks/useLocalStorage'
 import PainelTarefas from '../components/PainelTarefas'
@@ -14,10 +14,19 @@ export default function Dashboard() {
     const [tarefaEditando, setTarefaEditando] = useState(null)
     const [colunaAtiva, setColunaAtiva] = useState('A FAZER')
 
+    useEffect(() => {
+        const pendentes = tarefas.filter((tarefa) => !(tarefa.concluida || tarefa.coluna === 'CONCLUÍDA')).length
+        document.title = pendentes > 0 ? `(${pendentes}) TaskFlow` : 'TaskFlow'
+
+        return () => {
+            document.title = 'TaskFlow'
+        }
+    }, [tarefas])
+
     // ✅ ABRE MODAL PARA CRIAR NOVA TAREFA
-    function abrirModalCriar() {
+    function abrirModalCriar(coluna = 'A FAZER') {
         setTarefaEditando(null)  // null = modo criação
-        setColunaAtiva('A FAZER')
+        setColunaAtiva(coluna)
         setModalAberto(true)
     }
 
